@@ -32,7 +32,7 @@ namespace workflow_app.Utilities
                 FileInfo[] Files = d.GetFiles("*.xlsx"); //Getting Text files
                 foreach (FileInfo file in Files)
                 {
-                    res.Add(new fileWithData(path + file, "ЗП Цнс"));
+                    res.Add(new fileWithData(path + file, "ЗП "));
                 }
             }
             return res;

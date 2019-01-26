@@ -43,85 +43,91 @@ namespace workflow_app.Utilities
 
         private void loadFile()
         {
-            List<Pair<int, int>> worksInd = new List<Pair<int, int>>();
-            List<Pair<int, int>> typesInd = new List<Pair<int, int>>();
             using (ExcelPackage xlPackage = new ExcelPackage(new FileInfo(path)))
             {
-                var myWorksheet = xlPackage.Workbook.Worksheets.FirstOrDefault(x => x.Name == tabName); //select sheet here 
-                var totalRows = myWorksheet.Dimension.End.Row;
-                var totalColumns = myWorksheet.Dimension.End.Column;
-
-                var sb = new StringBuilder(); //this is your your data 
-                for (int rowNum = 1; rowNum <= totalRows; rowNum++) //selet starting row here 
-                {
-                    for (int colNum = 1; colNum <= totalColumns; ++colNum)
+                foreach (var myWorksheet in xlPackage.Workbook.Worksheets) {
+                    //var myWorksheet = xlPackage.Workbook.Worksheets.FirstOrDefault(x => x.Name == tabName); //select sheet here 
+                    List<Pair<int, int>> worksInd = new List<Pair<int, int>>();
+                    List<Pair<int, int>> typesInd = new List<Pair<int, int>>();
+                    if (!myWorksheet.Name.StartsWith(tabName))
                     {
-                        var curColor = myWorksheet.Cells[rowNum, colNum].Style.Fill.BackgroundColor.Rgb;
-                        if (curColor != null && curColor != "FFFFFFFF")
+                        continue;
+                    }
+                    var totalRows = myWorksheet.Dimension.End.Row;
+                    var totalColumns = myWorksheet.Dimension.End.Column;
+
+                    var sb = new StringBuilder(); //this is your your data 
+                    for (int rowNum = 1; rowNum <= totalRows; rowNum++) //selet starting row here 
+                    {
+                        for (int colNum = 1; colNum <= totalColumns; ++colNum)
                         {
-                            if (curColor == "FFFFFF00")
+                            var curColor = myWorksheet.Cells[rowNum, colNum].Style.Fill.BackgroundColor.Rgb;
+                            if (curColor != null && curColor != "FFFFFFFF")
                             {
-                                if (myWorksheet.Cells[rowNum, colNum].Text.Length > 0)
-                                    typesInd.Add(new Pair<int, int>(rowNum, colNum));
-                            }
-                            else if (curColor == "FFFF0000")
-                            {
-                                if (myWorksheet.Cells[rowNum, colNum].Text.Length > 0)
-                                    worksInd.Add(new Pair<int, int>(rowNum, colNum));
+                                if (curColor == "FFFFFF00")
+                                {
+                                    if (myWorksheet.Cells[rowNum, colNum].Text.Length > 0)
+                                        typesInd.Add(new Pair<int, int>(rowNum, colNum));
+                                }
+                                else if (curColor == "FFFF0000")
+                                {
+                                    if (myWorksheet.Cells[rowNum, colNum].Text.Length > 0)
+                                        worksInd.Add(new Pair<int, int>(rowNum, colNum));
+                                }
                             }
                         }
                     }
-                }
 
-                foreach (var type in typesInd)
-                {
-                    foreach (var works in worksInd)
+                    foreach (var type in typesInd)
                     {
-                        Pair<int, int> normPos = new Pair<int, int>(works.First, type.Second);
-                        Pair<int, int> pricePos = new Pair<int, int>(works.First, type.Second + 1);
-                        if (myWorksheet.Cells[normPos.First, normPos.Second].Text.Length == 0) continue;
+                        foreach (var works in worksInd)
+                        {
+                            Pair<int, int> normPos = new Pair<int, int>(works.First, type.Second);
+                            Pair<int, int> pricePos = new Pair<int, int>(works.First, type.Second + 1);
+                            if (myWorksheet.Cells[normPos.First, normPos.Second].Text.Length == 0) continue;
 
-                        string typeStr = myWorksheet.Cells[type.First, type.Second].Text;
-                        string workStr = myWorksheet.Cells[works.First, works.Second].Text;
-                        string trimedType = typeStr.Trim();
-                        int index = trimedType.IndexOf(' ');
-                        string tp = trimedType;
-                        string subtype = "";
-                        if (index != -1)
-                        {
-                            tp = trimedType.Substring(0, index);
-                            subtype = trimedType.Substring(index + 1);
-                        }
+                            string typeStr = myWorksheet.Cells[type.First, type.Second].Text;
+                            string workStr = myWorksheet.Cells[works.First, works.Second].Text;
+                            string trimedType = typeStr.Trim();
+                            int index = trimedType.IndexOf(' ');
+                            string tp = trimedType;
+                            string subtype = "";
+                            if (index != -1)
+                            {
+                                tp = trimedType.Substring(0, index);
+                                subtype = trimedType.Substring(index + 1);
+                            }
 
-                        float norm = 0;
-                        float price = 0;
-                        int rank = 0;
-                        try
-                        {
-                            norm = float.Parse(myWorksheet.Cells[normPos.First, normPos.Second].Text);
-                        }
-                        catch (Exception)
-                        {
+                            float norm = 0;
+                            float price = 0;
+                            int rank = 0;
+                            try
+                            {
+                                norm = float.Parse(myWorksheet.Cells[normPos.First, normPos.Second].Text);
+                            }
+                            catch (Exception)
+                            {
 
-                        }
-                        try
-                        {
-                            price = float.Parse(myWorksheet.Cells[pricePos.First, pricePos.Second].Text);
-                        }
-                        catch (Exception)
-                        {
+                            }
+                            try
+                            {
+                                price = float.Parse(myWorksheet.Cells[pricePos.First, pricePos.Second].Text);
+                            }
+                            catch (Exception)
+                            {
 
-                        }
+                            }
 
-                        try
-                        {
-                            rank = int.Parse(myWorksheet.Cells[works.First, works.Second + 1].Text);
-                        }
-                        catch (Exception)
-                        {
+                            try
+                            {
+                                rank = int.Parse(myWorksheet.Cells[works.First, works.Second + 1].Text);
+                            }
+                            catch (Exception)
+                            {
 
+                            }
+                            listOfEntries.Add(new PaimentEntry(tp, subtype, workStr, norm, price, rank));
                         }
-                        listOfEntries.Add(new PaimentEntry(tp, subtype, workStr, norm, price, rank));
                     }
                 }
             }
