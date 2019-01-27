@@ -1,4 +1,6 @@
-﻿namespace workflow_app
+﻿using System.Windows.Forms;
+
+namespace workflow_app
 {
     partial class LoginForm
     {
@@ -43,7 +45,7 @@
             this.workersDropdown.Name = "workersDropdown";
             this.workersDropdown.Size = new System.Drawing.Size(283, 21);
             this.workersDropdown.TabIndex = 0;
-            this.workersDropdown.SelectedIndexChanged += new System.EventHandler(this.WorkersDropdown_SelectedIndexChanged);
+            
             // 
             // label1
             // 
@@ -61,6 +63,7 @@
             this.passwordTextBox.Size = new System.Drawing.Size(283, 20);
             this.passwordTextBox.TabIndex = 2;
             this.passwordTextBox.TextChanged += new System.EventHandler(this.Password_TextChanged);
+            this.passwordTextBox.KeyPress += PasswordTextBox_KeyPress;
             // 
             // passwordLabel
             // 

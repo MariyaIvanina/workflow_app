@@ -14,14 +14,16 @@ namespace workflow_app
     public partial class WorkerSheetForm : Form
     {
         private String workerName;
+        private String password;
         private List<DoneWork> doneWorks = new List<DoneWork>();
         private Control[] controlsToDisable;
         private WorkTypesUtility workTypesUtility = new WorkTypesUtility();
 
-        public WorkerSheetForm(String workerName)
+        public WorkerSheetForm(String workerName, String password)
         {
             InitializeComponent();
             this.workerName = workerName;
+            this.password = password;
             workerNameLabel.Text = workerName;
             SetupDataGridView();
             controlsToDisable = new Control[] { productSubtypeCombobox, workTypeCombobox, workQuantityTextbox, addButton};
@@ -193,7 +195,7 @@ namespace workflow_app
 
         private void confirmButton_Click(object sender, EventArgs e)
         {
-            ConfirmForm confirmForm = new ConfirmForm(workerName, DateTime.Now, doneWorks);
+            ConfirmForm confirmForm = new ConfirmForm(workerName, password, DateTime.Now, doneWorks);
             confirmForm.ParentDialogForm = this;
             this.Visible = false;
             confirmForm.ShowDialog();

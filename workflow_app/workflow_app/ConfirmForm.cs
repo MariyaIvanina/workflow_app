@@ -15,12 +15,16 @@ namespace workflow_app
     {
         private XlsxSaver xlsxSaver = new XlsxSaver();
         private List<DoneWork>  doneWorks;
-        public ConfirmForm(String workerName, DateTime workDate, List<DoneWork> doneWorks)
+        private String password;
+        private String userName;
+        public ConfirmForm(String workerName, String password, DateTime workDate, List<DoneWork> doneWorks)
         {
             InitializeComponent();
             WorkDateLabel.Text = workDate.ToString();
             WorkerNameLabel.Text = workerName;
             this.doneWorks = doneWorks;
+            this.password = password;
+            this.userName = workerName;
             SetupDataGridView();
             PopulateDataGridView();
         }
@@ -29,7 +33,7 @@ namespace workflow_app
 
         private void confirmButton_Click(object sender, EventArgs e)
         {
-            xlsxSaver.doneWorkSaver(doneWorks);
+            xlsxSaver.DoneWorkSaver(userName, password, doneWorks);
             this.Close();
         }
 

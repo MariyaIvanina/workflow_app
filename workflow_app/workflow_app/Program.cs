@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using workflow_app.Configuration;
 
 namespace workflow_app
 {
@@ -15,6 +16,7 @@ namespace workflow_app
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            AppConfig.Init();
             Application.Run(new LoginForm());
         }
     }

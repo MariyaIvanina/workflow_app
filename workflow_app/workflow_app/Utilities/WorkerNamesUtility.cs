@@ -1,34 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using workflow_app.Configuration;
 
 namespace workflow_app.Utilities
 {
+    public class Worker
+    {
+        public string Name { get; set; }
+        public bool IsActive { get; set; }
+
+        public Worker(string name, bool isActive)
+        {
+            Name = name;
+            IsActive = isActive;
+        }
+    }
+
     public class WorkerNamesUtility
     {
-        public String AdminName
+        public List<Worker> GetWorkers()
         {
-            get
-            {
-                return "Admin";
-            }
-        }
-
-        public List<string> GetWorkers()
-        {
-            string path = @"files\";
-            string fileName = "users.txt";
-            List<string> res = new List<string>();
-            if (File.Exists(path + fileName))
+            string filePath = AppConfig.GetUsersNameFile();
+            List<Worker> res = new List<Worker>();
+            if (File.Exists(filePath))
             {
                 string line;
-                System.IO.StreamReader file =
-                        new System.IO.StreamReader(path + fileName);
+                StreamReader file = new StreamReader(filePath);
                 while ((line = file.ReadLine()) != null)
                 {
-                    res.Add(line);
+                    if (File.Exists(AppConfig.GetUserResultFile(line))){
+                        res.Add(new Worker(line, true));
+                    }
+                    else
+                    {
+                        res.Add(new Worker(line, false));
+                    }
                 }
             }
             return res;
