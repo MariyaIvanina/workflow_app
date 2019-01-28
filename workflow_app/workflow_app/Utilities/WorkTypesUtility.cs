@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using workflow_app.Configuration;
 
 namespace workflow_app.Utilities
 {
@@ -25,7 +26,7 @@ namespace workflow_app.Utilities
         private List<fileWithData> loadFilesList()
         {
             List<fileWithData> res = new List<fileWithData>();
-            string path = @"files\norms\";
+            string path = AppConfig.GetNormDirectory();
             if (Directory.Exists(path))
             {
                 DirectoryInfo d = new DirectoryInfo(path);//Assuming Test is your Folder

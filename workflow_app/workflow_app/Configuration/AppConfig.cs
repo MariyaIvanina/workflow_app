@@ -10,14 +10,19 @@ namespace workflow_app.Configuration
             return basicPath;
         }
 
-        public static void Init()
+        public static void Init(String path)
         {
-            basicPath = @"files\";
+            basicPath = path;
         }
 
         public static string GetUserResultFile(string user)
         {
             return basicPath + @"results\" + user + ".xlsx";
+        }
+
+        public static string GetNormDirectory()
+        {
+            return GetBasePath() + @"norms\";
         }
 
         public static string GetUsersNameFile()

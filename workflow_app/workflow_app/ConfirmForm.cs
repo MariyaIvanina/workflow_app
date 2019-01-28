@@ -27,6 +27,10 @@ namespace workflow_app
             this.userName = workerName;
             SetupDataGridView();
             PopulateDataGridView();
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            StartPosition = FormStartPosition.CenterScreen; 
         }
 
         public Form ParentDialogForm { get; set; }
@@ -34,6 +38,9 @@ namespace workflow_app
         private void confirmButton_Click(object sender, EventArgs e)
         {
             xlsxSaver.DoneWorkSaver(userName, password, doneWorks);
+            LoginForm loginForm = new LoginForm();
+            this.Visible = false;
+            loginForm.ShowDialog();
             this.Close();
         }
 

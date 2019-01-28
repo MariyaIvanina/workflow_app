@@ -19,6 +19,10 @@ namespace workflow_app
             SetPasswordVisible(false);
             loginButton.Enabled = false;
             passwordTextBox.PasswordChar = '*';
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            StartPosition = FormStartPosition.CenterScreen; 
         }
 
         private void SetPasswordVisible(bool visible)

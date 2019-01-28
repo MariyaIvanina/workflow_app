@@ -29,6 +29,10 @@ namespace workflow_app
             controlsToDisable = new Control[] { productSubtypeCombobox, workTypeCombobox, workQuantityTextbox, addButton};
             PopulateDataGridView();
             ClearData();
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            StartPosition = FormStartPosition.CenterScreen; 
         }
 
         private void PopulateDropdown(ComboBox comboBox, List<String> source)

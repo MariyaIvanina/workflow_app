@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
 using workflow_app.Configuration;
@@ -16,7 +17,7 @@ namespace workflow_app
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            AppConfig.Init();
+            AppConfig.Init(ConfigurationManager.AppSettings["folder_to_files"]);
             Application.Run(new LoginForm());
         }
     }
