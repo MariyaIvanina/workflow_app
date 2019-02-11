@@ -109,7 +109,7 @@
             this.Controls.Add(this.WorkerNameLabel);
             this.Controls.Add(this.doneWorkDatagrid);
             this.Name = "ConfirmForm";
-            this.Text = "ConfirmForm";
+            this.Text = "Окно для подтверждения";
             ((System.ComponentModel.ISupportInitialize)(this.doneWorkDatagrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
