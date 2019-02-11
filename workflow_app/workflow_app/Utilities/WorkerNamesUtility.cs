@@ -26,15 +26,18 @@ namespace workflow_app.Utilities
             if (File.Exists(filePath))
             {
                 string line;
-                StreamReader file = new StreamReader(filePath);
-                while ((line = file.ReadLine()) != null)
+                using (StreamReader file = new StreamReader(filePath))
                 {
-                    if (File.Exists(AppConfig.GetUserResultFile(line))){
-                        res.Add(new Worker(line, true));
-                    }
-                    else
+                    while ((line = file.ReadLine()) != null)
                     {
-                        res.Add(new Worker(line, false));
+                        if (File.Exists(AppConfig.GetUserResultFile(line)))
+                        {
+                            res.Add(new Worker(line, true));
+                        }
+                        else
+                        {
+                            res.Add(new Worker(line, false));
+                        }
                     }
                 }
             }
